@@ -74,4 +74,8 @@ def update_config(args, config):
         config.TRAIN_CFG["data_dir"] = args.train_data_dir
     if args.valid_data_dir is not None:
         config.VALID_CFG["data_dir"] = args.valid_data_dir
+    if args.log is not None:
+        config.OUTPUTS_PATH = os.path.join(os.path.dirname(config.OUTPUTS_PATH), args.log)
+        config.SUMMARY_PATH = os.path.join(config.OUTPUTS_PATH, "summary")
+        config.LOG_FILE = os.path.join(config.OUTPUTS_PATH, 'log.out')
     return config

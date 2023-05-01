@@ -18,8 +18,11 @@ def train_one_epoch(config,
     for s, t in train_loader:
         # print(s[:, 0].size())
         loss = 0.0
-        y = model(s)
-        loss_dict = loss_cls.loss(y, t)
+        # s = s.expand((-1, 3, -1, -1))
+        # y = model(s)
+        # loss_dict = loss_cls.loss(y, t)
+        pred, mask = model(s)
+        loss_dict = model.forward_loss(s, pred, mask)
         for _, scalar in loss_dict.items():
             loss += scalar
         loss_dict["total_loss"] = loss

@@ -10,6 +10,7 @@ from config import update_config
 from dataload.build import build_loader
 from model.unet import UNet
 from model.vit import vit_base_patch16
+from model.mae import mae_vit_base_patch16_dec512d8b
 from loss import CalLoss 
 from train import train_start
 
@@ -20,7 +21,8 @@ def parse_option():
     parser.add_argument('--batch_size', type=int, help="batch size for single GPU/CPU")
     parser.add_argument('--train_data_dir', type=str, help="path to training dataset")
     parser.add_argument('--valid_data_dir', type=str, help="path to validation dataset")
-    args, unparsed = parser.parse_known_args()
+    parser.add_argument('--log', type=str, help="path to output log file")
+    args, _ = parser.parse_known_args()
     # update config 
     config = update_config(args, ori_config)
     return config
@@ -33,7 +35,8 @@ def main(config):
         train_loader, valid_loader = build_loader(config)
         log_contents['Time'] = ['Load data time: %s' % (datetime.datetime.now() - time_start).__str__()]
         # model = UNet(n_channels=1, n_classes=1)
-        model = vit_base_patch16(img_size=64, in_chans=1)
+        # model = vit_base_patch16(img_size=config.TRAIN_CFG['height'], in_chans=1)
+        model = mae_vit_base_patch16_dec512d8b(img_size=config.TRAIN_CFG['height'], in_chans=1)
         model.to(config.DEVICE)
         loss_cls = CalLoss()
         optimizer = optim.Adam(model.parameters(), lr=config.LR_RATE)
