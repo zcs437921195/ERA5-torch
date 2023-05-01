@@ -9,6 +9,7 @@ import config as ori_config
 from config import update_config
 from dataload.build import build_loader
 from model.unet import UNet
+from model.vit import vit_base_patch16
 from loss import CalLoss 
 from train import train_start
 
@@ -31,8 +32,8 @@ def main(config):
     if config.TRAIN:
         train_loader, valid_loader = build_loader(config)
         log_contents['Time'] = ['Load data time: %s' % (datetime.datetime.now() - time_start).__str__()]
-        # model = TransFormer()
-        model = UNet(n_channels=1, n_classes=1)
+        # model = UNet(n_channels=1, n_classes=1)
+        model = vit_base_patch16(img_size=64, in_chans=1)
         model.to(config.DEVICE)
         loss_cls = CalLoss()
         optimizer = optim.Adam(model.parameters(), lr=config.LR_RATE)
