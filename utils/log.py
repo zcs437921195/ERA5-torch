@@ -33,8 +33,9 @@ def get_head(config):
     return out
 
 
-def step_log(config, contents: dict):
-    out = get_head(config)
+def update_log(config, contents: dict):
+    out = 'Outputs path: ' + config.OUTPUTS_PATH + '\n'
+    out += get_head(config)
     rows = max([len(x) for x in contents.values()])
     for i in range(rows):
         line = '|'
@@ -51,7 +52,7 @@ def step_log(config, contents: dict):
     return out
 
 
-def update_log(config, contents: str):
+def write_log(config, contents: str):
     if not os.path.exists(os.path.dirname(config.LOG_FILE)):
         os.makedirs(os.path.dirname(config.LOG_FILE))
     with open(config.LOG_FILE, 'a+') as f:

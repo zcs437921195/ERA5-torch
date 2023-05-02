@@ -35,8 +35,8 @@ VALID_CFG = dict(
     elements=["10m_u_component_of_wind"], # use elements. The list of all elements see modules/constants.ERA5_DATA_ELEMENTS
     height=64,
     width=64,
-    total_sql_len=6, # length of sequence
-    inp_sql_len=5, # length of inputs sequence
+    total_sql_len=5, # length of sequence
+    inp_sql_len=4, # length of inputs sequence
     out_sql_len=1, # length of outputs sequence
 )
 BATCH_SIZE = 4
@@ -58,8 +58,8 @@ now = now.strftime("%Y%m%d%H%M%S")
 OUTPUTS_PATH = os.path.join('./log/', now)
 SUMMARY_PATH = os.path.join(OUTPUTS_PATH, "summary")
 LOG_FILE = os.path.join(OUTPUTS_PATH, 'log.out')
-LOG_COL = ('Epochs', 'Loss', 'Metric', 'Time')
-LOG_COL_LEN = (10, 36, 10, 36)
+LOG_COL = ('Epochs', 'Training Loss', 'Evaluation', 'Time')
+LOG_COL_LEN = (10, 36, 36, 36)
 USE_TENSORBOARD = True
 
 

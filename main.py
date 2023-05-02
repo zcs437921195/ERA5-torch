@@ -40,7 +40,7 @@ def main(config):
         model.to(config.DEVICE)
         loss_cls = CalLoss()
         optimizer = optim.Adam(model.parameters(), lr=config.LR_RATE)
-        train_start(config, model, train_loader, optimizer, loss_cls, time_start, log_contents)
+        train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, time_start, log_contents)
     return 0
 
 

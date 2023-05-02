@@ -30,7 +30,7 @@ class AutoEncoderLoss(nn.Module):
     def forward(self, preds, targets):
         loss_dict = self.loss(preds, targets)
         total_loss = 0.0
-        for key, value in loss_dict.items():
+        for _, value in loss_dict.items():
             total_loss += value
         return total_loss
         
