@@ -11,7 +11,7 @@ from constants import ERA5_PRESSURE_LEVEL
         
 
 class ERA5:
-    def __init__(self, data_cfg: dict) -> None:
+    def __init__(self, data_cfg: dict=None) -> None:
         self.data_cfg = data_cfg
 
 
@@ -46,21 +46,21 @@ class ERA5:
         # ERA5经度从小到大，纬度从大到小排列
         era5_lon = list(f.variables["longitude"][:])
         era5_lat = list(f.variables["latitude"][:])
-        cut_lon1, cut_lon2 = ERA5_LON_LAT_INFO['cut_lon']  # cut_lon1 < cut_lon2
-        cut_lat1, cut_lat2 = ERA5_LON_LAT_INFO['cut_lat']  # cut_lat1 < cut_lat2
-        cut_lon_index1, cut_lon_index2 = era5_lon.index(cut_lon1), era5_lon.index(cut_lon2)
-        cut_lat_index1, cut_lat_index2 = era5_lat.index(cut_lat1), era5_lat.index(cut_lat2)
+        # cut_lon1, cut_lon2 = ERA5_LON_LAT_INFO['cut_lon']  # cut_lon1 < cut_lon2
+        # cut_lat1, cut_lat2 = ERA5_LON_LAT_INFO['cut_lat']  # cut_lat1 < cut_lat2
+        # cut_lon_index1, cut_lon_index2 = era5_lon.index(cut_lon1), era5_lon.index(cut_lon2)
+        # cut_lat_index1, cut_lat_index2 = era5_lat.index(cut_lat1), era5_lat.index(cut_lat2)
         # print(era5_lon[cut_lon_index1:cut_lon_index2+1])
         # print(era5_lat[cut_lat_index2:cut_lat_index1+1])
         data = f.variables[variable_name][:]
-        if level == "Pressure":
-            data = data[:, :, cut_lat_index2:cut_lat_index1+1, cut_lon_index1:cut_lon_index2+1]
-            level_index = [list(f.variables['level'][:]).index(i) for i in ERA5_PRESSURE_LEVEL]
-            data = data[:, level_index]
-        else:
-            data = data[:, cut_lat_index2:cut_lat_index1+1, cut_lon_index1:cut_lon_index2+1]
-            # data = np.expand_dims(data, axis=0)
-        return data
+        # if level == "Pressure":
+        #     data = data[:, :, cut_lat_index2:cut_lat_index1+1, cut_lon_index1:cut_lon_index2+1]
+        #     level_index = [list(f.variables['level'][:]).index(i) for i in ERA5_PRESSURE_LEVEL]
+        #     data = data[:, level_index]
+        # else:
+        #     data = data[:, cut_lat_index2:cut_lat_index1+1, cut_lon_index1:cut_lon_index2+1]
+        #     # data = np.expand_dims(data, axis=0)
+        return {"data": data, "lon": era5_lon, "lat":era5_lat}
 
     
     def load(self) -> np.ndarray:
@@ -79,7 +79,7 @@ class ERA5:
                 one_sample = []
                 for e in elements:
                     data_file = self.get_era5_file(data_dir, level, d, e)
-                    data = self.read_era5_data(data_file, level)[:sql_len, :height, :width]
+                    data = self.read_era5_data(data_file, level)["data"][:sql_len, :height, :width]
                     if level == "Ground":
                         data = self.normalize_ground(data, e)
                     one_sample.append(np.expand_dims(data, axis=1))

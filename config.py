@@ -24,8 +24,8 @@ TRAIN_CFG = dict(
     elements=["10m_u_component_of_wind"], # use elements. The list of all elements see modules/constants.ERA5_DATA_ELEMENTS
     height=64,
     width=64,
-    total_sql_len=5, # length of sequence
-    inp_sql_len=4, # length of inputs sequence
+    total_sql_len=24, # length of sequence
+    inp_sql_len=23, # length of inputs sequence
     out_sql_len=1, # length of outputs sequence
 )
 VALID_CFG = dict(
@@ -35,8 +35,8 @@ VALID_CFG = dict(
     elements=["10m_u_component_of_wind"], # use elements. The list of all elements see modules/constants.ERA5_DATA_ELEMENTS
     height=64,
     width=64,
-    total_sql_len=5, # length of sequence
-    inp_sql_len=4, # length of inputs sequence
+    total_sql_len=24, # length of sequence
+    inp_sql_len=23, # length of inputs sequence
     out_sql_len=1, # length of outputs sequence
 )
 BATCH_SIZE = 4
