@@ -13,13 +13,14 @@ def build_loader(config):
     valid_datasets = build_dataset(config, is_train=False)
     valid_loader = DataLoader(valid_datasets, batch_size=config.BATCH_SIZE)
     return train_loader, valid_loader
+    # return None, valid_loader
 
 
 def build_dataset(config, is_train: bool):
     if config.DATASET == "ERA5":
         if is_train:
             ll = ERA5(config.TRAIN_CFG)
-            datasets = ll.load()
+            datasets = ll.load()["data"]
             # inps = torch.tensor(datasets[:, :config.TRAIN_CFG["inp_sql_len"]], 
             #                     dtype=torch.float32,
             #                     device=config.DEVICE,
@@ -38,8 +39,8 @@ def build_dataset(config, is_train: bool):
             tgts = inps.clone()
         else:
             ll = ERA5(config.VALID_CFG)
-            datasets = ll.load()
-            # inps = torch.tensor(datasets[:, :config.VALID_CFG["inp_sql_len"]], 
+            datasets = ll.load()["data"]
+            # inps = torch.tensor(datasets[:, :config.valid_cfg["inp_sql_len"]], 
             #                     dtype=torch.float32,
             #                     device=config.DEVICE,
             #                     )

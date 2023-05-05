@@ -16,37 +16,47 @@ TRAIN = True
 ############################
 # Data setting
 ############################
+d = [datetime.datetime(2014, 5, 1, 0)]
+for i in range(90):
+    new_d = d[-1] + datetime.timedelta(days=1)
+    d.append(new_d)
 DATASET="ERA5"  # ERA5
 TRAIN_CFG = dict(
-    data_dir="./data", # training dataset path
+    data_dir="/data-fat01/TianZhiBei/科目二数据/数据/ERA5/", # training dataset path
     level="Ground", # era5 data level. Ground/Pressure.
-    dates=[datetime.datetime(2014, 6, 30, 0)] * 8, # use ERA5 dates.
+    # dates=[datetime.datetime(2014, 6, 30, 0)] * 8, # use ERA5 dates.
+    dates=d.copy(), # use ERA5 dates.
     elements=["10m_u_component_of_wind"], # use elements. The list of all elements see modules/constants.ERA5_DATA_ELEMENTS
-    height=64,
-    width=64,
+    height=80,
+    width=80,
     total_sql_len=24, # length of sequence
     inp_sql_len=23, # length of inputs sequence
     out_sql_len=1, # length of outputs sequence
 )
+d = [datetime.datetime(2015, 5, 1, 0)]
+for i in range(3):
+    new_d = d[-1] + datetime.timedelta(days=1)
+    d.append(new_d)
 VALID_CFG = dict(
-    data_dir="./data",
+    data_dir="/data-fat01/TianZhiBei/科目二数据/数据/ERA5/",
     level="Ground", # era5 data level. Ground/Pressure.
-    dates=[datetime.datetime(2014, 6, 30, 0)], # use ERA5 dates.
+    # dates=[datetime.datetime(2014, 6, 30, 0)], # use ERA5 dates.
+    dates=d.copy(), # use ERA5 dates.
     elements=["10m_u_component_of_wind"], # use elements. The list of all elements see modules/constants.ERA5_DATA_ELEMENTS
-    height=64,
-    width=64,
+    height=80,
+    width=80,
     total_sql_len=24, # length of sequence
     inp_sql_len=23, # length of inputs sequence
     out_sql_len=1, # length of outputs sequence
 )
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 
 
 ############################
 # Training setting
 ############################
-LR_RATE = 0.01
-EPOCH = 20
+LR_RATE = 1e-5
+EPOCH = 10
 VALID_EPOCH = 1 # vallidation every VALID_EPOCH
 
 
@@ -55,12 +65,19 @@ VALID_EPOCH = 1 # vallidation every VALID_EPOCH
 ############################
 now = datetime.datetime.now()
 now = now.strftime("%Y%m%d%H%M%S")
-OUTPUTS_PATH = os.path.join('./log/', now)
+OUTPUTS_PATH = os.path.join('./outputs/', now)
 SUMMARY_PATH = os.path.join(OUTPUTS_PATH, "summary")
 LOG_FILE = os.path.join(OUTPUTS_PATH, 'log.out')
 LOG_COL = ('Epochs', 'Training Loss', 'Evaluation', 'Time')
 LOG_COL_LEN = (10, 36, 36, 36)
 USE_TENSORBOARD = True
+
+
+############################
+# Visualize setting
+############################
+VISUALIZE = True
+VISUAL_PATH = os.path.join(OUTPUTS_PATH, 'visual')
 
 
 

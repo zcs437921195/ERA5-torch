@@ -16,6 +16,7 @@ from model.mae import mae_vit_base_patch16_dec512d8b
 from model.autoencoder_vit import AutoencoderViT
 from loss import CalLoss 
 from train import train_start
+from visualize.visual import visual_model
 
 
 def parse_option():
@@ -37,7 +38,6 @@ def main(config):
     if config.TRAIN:
         train_loader, valid_loader = build_loader(config)
         log_contents['Time'] = ['Load data time: %s' % (datetime.datetime.now() - time_start).__str__()]
-        # model = UNet(n_channels=1, n_classes=1)
         # model = vit_base_patch16(img_size=config.TRAIN_CFG['height'], in_chans=1)
         # model = mae_vit_base_patch16_dec512d8b(img_size=config.TRAIN_CFG['height'], in_chans=1)
         model = AutoencoderViT(
@@ -48,7 +48,10 @@ def main(config):
         model.to(config.DEVICE)
         loss_cls = CalLoss()
         optimizer = optim.Adam(model.parameters(), lr=config.LR_RATE)
-        train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, time_start, log_contents)
+        model = train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, time_start, log_contents)
+        if config.VISUALIZE:
+            visual_model(config, model, valid_loader, save_fig=True)
+
     return 0
 
 

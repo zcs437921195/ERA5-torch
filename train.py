@@ -65,7 +65,7 @@ def train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, 
         model.train()
         model, loss_dict = train_one_epoch(config, model, train_loader, optimizer, loss_cls, writer)
         # 记录log
-        log_contents['Epochs'] = ['%d/%d' % (epc, config.EPOCH)]
+        log_contents['Epochs'] = ['%d/%d' % (epc + 1, config.EPOCH)]
         log_contents['Time'][-1] = 'cost time: %s' % (datetime.datetime.now() - time_start).__str__()
         # 记录Loss
         writer = update_tensorboard_log(config, log_contents, 'Training Loss', epc, loss_dict, writer)
@@ -78,4 +78,4 @@ def train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, 
         write_log(config, epc_log)
     if config.USE_TENSORBOARD:
         writer.close()
-    return 0
+    return model

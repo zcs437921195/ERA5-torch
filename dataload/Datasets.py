@@ -79,13 +79,15 @@ class ERA5:
                 one_sample = []
                 for e in elements:
                     data_file = self.get_era5_file(data_dir, level, d, e)
-                    data = self.read_era5_data(data_file, level)["data"][:sql_len, :height, :width]
+                    data = self.read_era5_data(data_file, level)
+                    lon, lat = data["lon"][:width], data["lat"][:height]
+                    data = data["data"][:sql_len, :height, :width]
                     if level == "Ground":
                         data = self.normalize_ground(data, e)
                     one_sample.append(np.expand_dims(data, axis=1))
                 load_data.append(np.expand_dims(np.concatenate(one_sample, axis=1), axis=0))
             load_data = np.concatenate(load_data, axis=0)
-        return load_data
+        return {"data": load_data, "lon": lon, "lat": lat}
 
 def test():
     return 0
