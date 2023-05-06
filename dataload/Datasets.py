@@ -63,7 +63,7 @@ class ERA5:
         return {"data": data, "lon": era5_lon, "lat":era5_lat}
 
     
-    def load(self) -> np.ndarray:
+    def load(self, normalize: bool=True) -> np.ndarray:
         """
         :return: 5-dim np.ndarray [N, E, T, H, W] --- [天数, 时效数, 要素数, 高度, 宽度]
         """
@@ -82,7 +82,7 @@ class ERA5:
                     data = self.read_era5_data(data_file, level)
                     lon, lat = data["lon"][:width], data["lat"][:height]
                     data = data["data"][:sql_len, :height, :width]
-                    if level == "Ground":
+                    if level == "Ground" and normalize:
                         data = self.normalize_ground(data, e)
                     one_sample.append(np.expand_dims(data, axis=1))
                 load_data.append(np.expand_dims(np.concatenate(one_sample, axis=1), axis=0))

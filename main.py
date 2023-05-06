@@ -48,10 +48,10 @@ def main(config):
         model.to(config.DEVICE)
         loss_cls = CalLoss()
         optimizer = optim.Adam(model.parameters(), lr=config.LR_RATE)
+        # optimizer = optim.AdamW(model.parameters(), lr=config.LR_RATE, betas=(0.9, 0.95))
         model = train_start(config, model, train_loader, valid_loader, optimizer, loss_cls, time_start, log_contents)
         if config.VISUALIZE:
             visual_model(config, model, valid_loader, save_fig=True)
-
     return 0
 
 

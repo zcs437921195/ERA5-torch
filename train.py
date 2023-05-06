@@ -41,6 +41,8 @@ def train_one_epoch(config,
         # s = s.expand((-1, 3, -1, -1))
         # y = model(s)
         # loss_dict = loss_cls.loss(y, t)
+        # pred, mask = model(inps)
+        # step_loss_dict = model.forward_loss(tgts, pred, mask)
         pred = model(inps)
         step_loss_dict = model.forward_loss(tgts, pred)
         for key, scalar in step_loss_dict.items():

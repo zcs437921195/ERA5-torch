@@ -8,8 +8,11 @@ from dataload.Datasets import ERA5
 
 
 def visual_model(config, model, data_loader, save_fig: bool):
+    model.eval()
     inps, tgts = data_loader.dataset[:]
     preds = model(inps)
+    preds = model.unpatchify(preds)
+    # preds, mask = model(inps)
     if "cuda" in config.DEVICE.type:
         preds, tgts = preds.detach().cpu().numpy(), tgts.detach().cpu().numpy()
     else:

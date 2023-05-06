@@ -20,7 +20,7 @@ def build_dataset(config, is_train: bool):
     if config.DATASET == "ERA5":
         if is_train:
             ll = ERA5(config.TRAIN_CFG)
-            datasets = ll.load()["data"]
+            datasets = ll.load(normalize=False)["data"]
             # inps = torch.tensor(datasets[:, :config.TRAIN_CFG["inp_sql_len"]], 
             #                     dtype=torch.float32,
             #                     device=config.DEVICE,
@@ -39,7 +39,7 @@ def build_dataset(config, is_train: bool):
             tgts = inps.clone()
         else:
             ll = ERA5(config.VALID_CFG)
-            datasets = ll.load()["data"]
+            datasets = ll.load(normalize=False)["data"]
             # inps = torch.tensor(datasets[:, :config.valid_cfg["inp_sql_len"]], 
             #                     dtype=torch.float32,
             #                     device=config.DEVICE,

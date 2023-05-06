@@ -15,6 +15,8 @@ class EvalMetric():
         for inps, tgts in valid_loader:
             pred = model(inps)
             step_loss_dict = model.forward_loss(tgts, pred)
+            # pred, mask = model(inps)
+            # step_loss_dict = model.forward_loss(tgts, pred, mask)
             for key, scalar in step_loss_dict.items():
                 metric_dict[key] += scalar
             cnt += 1
